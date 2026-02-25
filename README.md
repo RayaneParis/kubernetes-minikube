@@ -101,9 +101,14 @@ docker push yourDockerHubName/imageName:version
 Example: `docker push myDockerID/myservice:1`
 
 ## Create a kubernetes deployment from a Docker image
+Déja réalisé !
 
 ```
 kubectl get nodes
+```
+```
+NAME       STATUS   ROLES           AGE   VERSION
+minikube   Ready    control-plane   76m   v1.35.1
 ```
 ```
 kubectl create deployment myservice --image=efrei/myservice:1
@@ -117,12 +122,130 @@ Check the pod:
 ```
 kubectl get pods
 ```
+```
+rayanekhatim@MacBook-Pro-de-Rayane kubernetes-minikube % kubectl get pods
+NAME                         READY   STATUS    RESTARTS   AGE
+myservice-6577d5697f-4fpml   1/1     Running   0          4m20s
+myservice-6577d5697f-rmbpn   1/1     Running   0          4m20s
+```
 
 Check if the state is running.
 
 Get complete logs for a pods: 
 ```
 kubectl describe pods
+```
+```
+rayanekhatim@MacBook-Pro-de-Rayane kubernetes-minikube % kubectl describe pods
+Name:             myservice-6577d5697f-4fpml
+Namespace:        default
+Priority:         0
+Service Account:  default
+Node:             minikube/192.168.49.2
+Start Time:       Wed, 25 Feb 2026 16:02:03 +0100
+Labels:           app=myservice
+                  pod-template-hash=6577d5697f
+Annotations:      <none>
+Status:           Running
+IP:               10.244.0.13
+IPs:
+  IP:           10.244.0.13
+Controlled By:  ReplicaSet/myservice-6577d5697f
+Containers:
+  myservice:
+    Container ID:   docker://ad37314653912e1b2482b4ebd04ca20797059f0df193dd3ea6664773d4b6d794
+    Image:          rayaneparis/myservice:1
+    Image ID:       docker-pullable://rayaneparis/myservice@sha256:26ad11374cd874240f8c069e1ecaec5f6b80508a7f3c2840d055125d9df38fb0
+    Port:           <none>
+    Host Port:      <none>
+    State:          Running
+      Started:      Wed, 25 Feb 2026 16:02:04 +0100
+    Ready:          True
+    Restart Count:  0
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-dq6b9 (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       True 
+  ContainersReady             True 
+  PodScheduled                True 
+Volumes:
+  kube-api-access-dq6b9:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type    Reason     Age    From               Message
+  ----    ------     ----   ----               -------
+  Normal  Scheduled  4m49s  default-scheduler  Successfully assigned default/myservice-6577d5697f-4fpml to minikube
+  Normal  Pulled     4m48s  kubelet            spec.containers{myservice}: Container image "rayaneparis/myservice:1" already present on machine and can be accessed by the pod
+  Normal  Created    4m48s  kubelet            spec.containers{myservice}: Container created
+  Normal  Started    4m48s  kubelet            spec.containers{myservice}: Container started
+
+
+Name:             myservice-6577d5697f-rmbpn
+Namespace:        default
+Priority:         0
+Service Account:  default
+Node:             minikube/192.168.49.2
+Start Time:       Wed, 25 Feb 2026 16:02:03 +0100
+Labels:           app=myservice
+                  pod-template-hash=6577d5697f
+Annotations:      <none>
+Status:           Running
+IP:               10.244.0.12
+IPs:
+  IP:           10.244.0.12
+Controlled By:  ReplicaSet/myservice-6577d5697f
+Containers:
+  myservice:
+    Container ID:   docker://96d51dcf3606a0ad1b6fea452ae510b2eb3b27f94ebf08e8a1f1f14fef387d11
+    Image:          rayaneparis/myservice:1
+    Image ID:       docker-pullable://rayaneparis/myservice@sha256:26ad11374cd874240f8c069e1ecaec5f6b80508a7f3c2840d055125d9df38fb0
+    Port:           <none>
+    Host Port:      <none>
+    State:          Running
+      Started:      Wed, 25 Feb 2026 16:02:03 +0100
+    Ready:          True
+    Restart Count:  0
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-p2h8w (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True 
+  Initialized                 True 
+  Ready                       True 
+  ContainersReady             True 
+  PodScheduled                True 
+Volumes:
+  kube-api-access-p2h8w:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type    Reason     Age    From               Message
+  ----    ------     ----   ----               -------
+  Normal  Scheduled  4m49s  default-scheduler  Successfully assigned default/myservice-6577d5697f-rmbpn to minikube
+  Normal  Pulled     4m49s  kubelet            spec.containers{myservice}: Container image "rayaneparis/myservice:1" already present on machine and can be accessed by the pod
+  Normal  Created    4m49s  kubelet            spec.containers{myservice}: Container created
+  Normal  Started    4m49s  kubelet            spec.containers{myservice}: Container started
+
 ```
 
 Retreive the IP address but notice that this IP address is ephemeral since a pods can be deleted and replaced by a new one.
@@ -171,6 +294,7 @@ Type values and their behaviors are:
 * ExternalName: Maps the Service to the contents of the externalName field (e.g. foo.bar.example.com), by returning a CNAME record
 
 ## Expose HTTP and HTTPS route using NodePort
+Déja réalisé !
 
 ```
 kubectl expose deployment myservice --type=NodePort --port=8080
@@ -181,6 +305,14 @@ Retrieve the service address:
 minikube service myservice --url
 ```
 
+```
+rayanekhatim@MacBook-Pro-de-Rayane kubernetes-minikube % minikube service myservice --url
+http://127.0.0.1:63615
+❗  Comme vous utilisez un pilote Docker sur darwin, le terminal doit être ouvert pour l'exécuter.
+```
+```
+Hello
+```
 This format of this address is `NodeIP:NodePort`.
 
 Test this address inside your browser. It should display hello again.
@@ -188,19 +320,30 @@ Test this address inside your browser. It should display hello again.
 Look from the NodeIP and the NodePort in the minikube dashboard.
 
 ## Scaling and load balancing
+Déja réalisé !
 
 Check if the myservice deployment is running:
 
 ```
 kubectl get deployments
 ```
-
+```
+rayanekhatim@MacBook-Pro-de-Rayane kubernetes-minikube % kubectl get deployments
+NAME        READY   UP-TO-DATE   AVAILABLE   AGE
+myservice   2/2     2            2           59m
+```
 How many instance are actually running:
 
 ```
 kubectl get pods
 ```
-
+```
+rayanekhatim@MacBook-Pro-de-Rayane kubernetes-minikube % kubectl get pods
+NAME                         READY   STATUS    RESTARTS   AGE
+myservice-6577d5697f-4fpml   1/1     Running   0          8m21s
+myservice-6577d5697f-rmbpn   1/1     Running   0          8m21s
+```
+J'ai deux pods déja réalisés
 Start a second instance:
 
 ```
@@ -220,6 +363,8 @@ again
 
 ## Creating a Service of type LoadBalancer
 
+Déja réalisé !
+
 Check if the myservice deployment is running:
 
 ```
@@ -231,6 +376,13 @@ If a service is running in front of the deployment you must delete this service 
 ```
 kubectl get services
 ```
+```
+rayanekhatim@MacBook-Pro-de-Rayane kubernetes-minikube % kubectl get services
+NAME         TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
+kubernetes   ClusterIP      10.96.0.1       <none>        443/TCP          82m
+myservice    LoadBalancer   10.103.41.166   <pending>     8080:32508/TCP   31m
+```
+
 And delete it:
 ```
 kubectl delete service serviceName
@@ -244,6 +396,7 @@ minikube service myservice --url
 Test in your web browser
 
 ## Rolling updates
+
 
 Rolling updates allow Deployments' update to take place with zero downtime by incrementally updating Pods instances with new ones.
 
@@ -260,6 +413,13 @@ kubectl rollout status deployments/my-deployment
 To roll back the deployment to your last working version, use the rollout undo subcommand:
 ```
 kubectl rollout undo deployments/my-deployment
+```
+
+```
+rayanekhatim@MacBook-Pro-de-Rayane kubernetes-minikube % kubectl rollout status deployment/myservice
+deployment "myservice" successfully rolled out
+rayanekhatim@MacBook-Pro-de-Rayane kubernetes-minikube % kubectl rollout undo deployments/myservice
+deployment.apps/myservice rolled back
 ```
 
 ## Create a deployment and a service using a yaml file
@@ -288,7 +448,18 @@ Apply the service of type loadbalancer:
 ```
 kubectl apply -f myservice-loadbalancing-service.yml
 ```
+
+```
+rayanekhatim@MacBook-Pro-de-Rayane kubernetes-minikube % kubectl apply -f myservice-deployment.yml
+deployment.apps/myservice unchanged
+rayanekhatim@MacBook-Pro-de-Rayane kubernetes-minikube % kubectl get deployments
+NAME        READY   UP-TO-DATE   AVAILABLE   AGE
+myservice   1/1     1            1           66m
+rayanekhatim@MacBook-Pro-de-Rayane kubernetes-minikube % kubectl get pods       
+NAME                         READY   STATUS    RESTARTS   AGE
+myservice-698b4db558-hbvn5   1/1     Running   0          4m14s
 Then test if it works as expected.
+```
 
 # Routing rule to a service using Ingress
 
